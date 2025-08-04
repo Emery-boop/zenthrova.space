@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ÉPICURE | Visual Gastronomy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #d4af37;
+            --dark-gold: #a67c00;
+            --light-gold: #f5e8c9;
+            --diamond: #e0f7fa;
+            --dark: #0a0a0a;
+            --darker: #050505;
+            --light: #f8f5f0;
+            --transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+            --shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            --glow: 0 0 15px rgba(212, 175, 55, 0.7);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Raleway', sans-serif;
+            color: var(--light);
+            background: var(--darker);
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: transparent;
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            padding: 15px 40px;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gold);
+            transition: var(--transition);
+            z-index: -1;
+        }
+        
+        .btn:hover {
+            color: var(--dark);
+        }
+        
+        .btn:hover:before {
+            left: 0;
+        }
+        
+        .btn-gold {
+            background: var(--gold);
+            color: var(--dark);
+        }
+        
+        .btn-gold:hover {
+            background: transparent;
+            color: var(--gold);
+        }
+        
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px 0;
+            z-index: 1000;
+            transition: var(--transition);
+            background: rgba(10, 10, 10, 0.5);
+            backdrop-filter: blur(10px);
+        }
+        
+        header.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+            padding: 15px 0;
+            box-shadow: 0 5px 30px rgba(212, 175, 55, 0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--gold);
+            text-decoration: none;
+            letter-spacing: 3px;
+            position: relative;
+        }
+        
+        .logo:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--gold);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.8s ease;
+        }
+        
+        .logo:hover:after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 40px;
+            position: relative;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-size: 16px;
+            transition: var(--transition);
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+        
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+        
+        .mobile-menu {
+            display: none;
+            font-size: 28px;
+            color: var(--light);
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+        }
+        
+        .hero-content {
+            max-width: 900px;
+            text-align: center;
+            margin: 0 auto;
+            padding-top: 100px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .hero h1 {
+            font-size: 6rem;
+            margin-bottom: 30px;
+            letter-spacing: 8px;
+            line-height: 1.1;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .hero h1:after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 4px;
+            background: var(--gold);
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 700px;
+            margin: 50px auto 40px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        
+        .hero-btns {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            z-index: 10;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
+        
+        /* Gallery Section */
+        .gallery-section {
+            padding: 150px 0;
+            position: relative;
+            background: var(--darker);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 100px;
+        }
+        
+        .section-title h2 {
+            font-size: 3.5rem;
+            color: var(--gold);
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--gold);
+        }
+        
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .gallery-item {
+            height: 500px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 5px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+            color: var(--light);
+            opacity: 0;
+            transition: var(--transition);
+            transform: translateY(20px);
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .dish-name {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: var(--gold);
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .dish-description {
+            font-size: 1rem;
+            color: var(--light-gold);
+            margin-bottom: 15px;
+        }
+        
+        .dish-price {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--light);
+        }
+        
+        /* Featured Dish */
+        .featured-dish {
+            padding: 150px 0;
+            background: linear-gradient(to right, var(--darker) 50%, rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1603532648955-a039f2e5da3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center right/cover;
+        }
+        
+        .featured-content {
+            max-width: 600px;
+            background: rgba(10, 10, 10, 0.8);
+            padding: 60px;
+            border: 1px solid var(--gold);
+            box-shadow: var(--glow);
+        }
+        
+        .featured-content h2 {
+            font-size: 3rem;
+            color: var(--gold);
+            margin-bottom: 30px;
+        }
+        
+        .featured-content p {
+            font-size: 1.1rem;
+            color: var(--light-gold);
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        
+        .dish-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .detail-item {
+            text-align: center;
+        }
+        
+        .detail-value {
+            font-size: 2rem;
+            color: var(--gold);
+            font-weight: 700;
+        }
+        
+        .detail-label {
+            font-size: 0.9rem;
+            color: var(--light-gold);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Menu Preview */
+        .menu-preview {
+            padding: 150px 0;
+            background: var(--darker);
+        }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 50px;
+        }
+        
+        .menu-category {
+            margin-bottom: 60px;
+        }
+        
+        .category-title {
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--gold);
+        }
+        
+        .menu-item {
+            display: flex;
+            margin-bottom: 40px;
+            gap: 25px;
+        }
+        
+        .menu-item-image {
+            width: 150px;
+            height: 150px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--gold);
+            box-shadow: var(--glow);
+        }
+        
+        .menu-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .menu-item:hover .menu-item-image img {
+            transform: scale(1.1);
+        }
+        
+        .menu-item-content {
+            flex: 1;
+        }
+        
+        .menu-item-title {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.5rem;
+            color: var(--light);
+            margin-bottom: 10px;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .menu-item-price {
+            color: var(--gold);
+            font-weight: 700;
+        }
+        
+        .menu-item-description {
+            color: var(--light-gold);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        /* Footer */
+        footer {
+            background: #0d0d0d;
+            padding: 100px 0 40px;
+            position: relative;
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .footer-column h3 {
+            font-size: 22px;
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 15px;
+            color: var(--light-gold);
+        }
+        
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--gold);
+        }
+        
+        .footer-column p, .footer-column a {
+            color: #999;
+            margin-bottom: 15px;
+            display: block;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-column a:hover {
+            color: var(--gold);
+            padding-left: 5px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            width: 45px;
+            height: 45px;
+            border: 1px solid #999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            border-radius: 50%;
+            transition: var(--transition);
+            font-size: 18px;
+        }
+        
+        .social-links a:hover {
+            background: var(--gold);
+            color: var(--dark);
+            border-color: var(--gold);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid #222;
+            color: #666;
+            font-size: 15px;
+            letter-spacing: 1px;
+        }
+        
+        /* Media Queries */
+        @media (max-width: 1200px) {
+            .gallery-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 4rem;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: var(--dark);
+                flex-direction: column;
+                padding: 100px 40px 40px;
+                transition: var(--transition);
+                z-index: 1000;
+                box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .nav-links li {
+                margin: 15px 0;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .featured-content {
+                max-width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .gallery-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .featured-dish {
+                background: linear-gradient(to top, var(--darker) 50%, rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1603532648955-a039f2e5da3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2.5rem;
+                letter-spacing: 4px;
+            }
+            
+            .hero-btns {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .section-title h2 {
+                font-size: 2.5rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">ÉPICURE</a>
+            <ul class="nav-links">
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#featured">Signature Dish</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#reservation">Reservations</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>VISUAL GASTRONOMY</h1>
+            <p>Where culinary artistry meets visual perfection. Experience dishes crafted to delight both palate and eye.</p>
+            <div class="hero-btns">
+                <a href="#gallery" class="btn btn-gold">Explore Gallery</a>
+                <a href="#reservation" class="btn">Reserve Table</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section" id="gallery">
+        <div class="container">
+            <div class="section-title">
+                <h2>CULINARY MASTERPIECES</h2>
+            </div>
+            <div class="gallery-container">
+                <!-- Dish 1 -->
+                <div class="gallery-item">
+                    <img src="https://urbani.com/cdn/shop/collections/bff9ab9ef0984105a95b776674da0916.jpg?v=1720168279" alt="Truffle Caviar">
+                    <div class="gallery-overlay">
+                        <div class="dish-name">Truffle Caviar</div>
+                        <div class="dish-description">Wild sturgeon caviar with truffle-infused crème fraîche and blinis</div>
+                        <div class="dish-price">$125</div>
+                    </div>
+                </div>
+                
+                <!-- Dish 2 -->
+                <div class="gallery-item">
+                    <img src="https://i0.wp.com/coolfooddude.com/wp-content/uploads/2023/11/Lobster-thermidor.jpg?resize=620%2C845&ssl=1" alt="Lobster Thermidor">
+                    <div class="gallery-overlay">
+                        <div class="dish-name">Lobster Thermidor</div>
+                        <div class="dish-description">Maine lobster baked with creamy brandy sauce and gruyère cheese</div>
+                        <div class="dish-price">$98</div>
+                    </div>
+                </div>
+                
+                <!-- Dish 3 -->
+                <div class="gallery-item">
+                    <img src="https://www.thenationalnews.com/resizer/1zHicYjz7fyO7ToDu8KjiufcCZw=/arc-photo-thenational/eu-central-1-prod/public/NASTOKOII5HABMMHZ3LQEQT24M.JPG" alt="Wagyu Beef Rossini">
+                    <div class="gallery-overlay">
+                        <div class="dish-name">Wagyu Beef Rossini</div>
+                        <div class="dish-description">A5 Japanese wagyu with foie gras, black truffle, and madeira jus</div>
+                        <div class="dish-price">$185</div>
+                    </div>
+                </div>
+                
+                <!-- Dish 4 -->
+                <div class="gallery-item">
+                    <img src="https://www.howtocookthat.net/public_html/wp-content/uploads/2016/12/P2220355-550x413.jpg" alt="Golden Opulence Sundae">
+                    <div class="gallery-overlay">
+                        <div class="dish-name">Golden Opulence Sundae</div>
+                        <div class="dish-description">Tahitian vanilla ice cream with edible gold leaf and rare chocolates</div>
+                        <div class="dish-price">$65</div>
+                    </div>
+                </div>
+                
+                <!-- Dish 5 -->
+                <div class="gallery-item">
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhZV8BYM95wlXLneyCCi2FZSBE6FtXknqW0s6sHtjtGb0uxQLXHAE4hPDLMqrAaHZAjV1Kw94DV0oVfLCMA0l8i-m3EydEiBwEsVdbZ9uBQeo5jE-WZENDMdiYrmLtuRPBRZ5lq4JHP1Y0/s1600/La+Grenouille+grand+marnier+souffle+(12).JPG" alt="Chocolate Soufflé">
+                    <div class="gallery-overlay">
+                        <div class="dish-name">Grand Marnier Soufflé</div>
+                        <div class="dish-description">Light as air soufflé infused with premium Grand Marnier</div>
+                        <div class="dish-price">$42</div>
+                    </div>
+                </div>
+                
+                <!-- Dish 6 -->
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Artisan Cocktails">
+                    <div class="gallery-overlay">
+                        <div class="dish-name">Cosmopolitan Royale</div>
+                        <div class="dish-description">Premium vodka, Cointreau, cranberry, and fresh lime with gold flakes</div>
+                        <div class="dish-price">$32</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Dish -->
+    <section class="featured-dish" id="featured">
+        <div class="container">
+            <div class="featured-content">
+                <h2>Chef's Signature Creation</h2>
+                <p>Our iconic dish that has earned international acclaim. The Wagyu Beef Rossini represents the pinnacle of culinary craftsmanship, featuring the world's finest ingredients and meticulous preparation.</p>
+                
+                <div class="dish-details">
+                    <div class="detail-item">
+                        <div class="detail-value">A5</div>
+                        <div class="detail-label">Wagyu Grade</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-value">48h</div>
+                        <div class="detail-label">Preparation</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-value">$185</div>
+                        <div class="detail-label">Price</div>
+                    </div>
+                </div>
+                
+                <p>Each element is prepared with precision - the wagyu seared to perfection, the foie gras delicately caramelized, and the truffle shaved at the table for maximum aroma. Served with Madeira reduction that has been aged for 6 months.</p>
+                
+                <a href="#reservation" class="btn btn-gold">Reserve This Experience</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Preview -->
+    <section class="menu-preview" id="menu">
+        <div class="container">
+            <div class="section-title">
+                <h2>CULINARY COLLECTION</h2>
+            </div>
+            <div class="menu-grid">
+                <div>
+                    <div class="menu-category">
+                        <h3 class="category-title">Appetizers</h3>
+                        
+                        <div class="menu-item">
+                            <div class="menu-item-image">
+                                <img src="https://urbani.com/cdn/shop/collections/bff9ab9ef0984105a95b776674da0916.jpg?v=1720168279" alt="Truffle Caviar">
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-item-title">
+                                    <span>Truffle Caviar</span>
+                                    <span class="menu-item-price">$125</span>
+                                </div>
+                                <div class="menu-item-description">
+                                    Wild sturgeon caviar served with truffle-infused crème fraîche and blinis
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="menu-item">
+                            <div class="menu-item-image">
+                                <img src="https://www.savorysimple.net/wp-content/uploads/2013/09/web-duck-breast-with-seared-foie-gras-and-balsamic-cherries_6744-1-500x375.jpg" alt="Foie Gras">
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-item-title">
+                                    <span>Seared Foie Gras</span>
+                                    <span class="menu-item-price">$85</span>
+                                </div>
+                                <div class="menu-item-description">
+                                    Hudson Valley foie gras with caramelized figs and brioche
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-category">
+                        <h3 class="category-title">Main Courses</h3>
+                        
+                        <div class="menu-item">
+                            <div class="menu-item-image">
+                                <img src="https://i0.wp.com/coolfooddude.com/wp-content/uploads/2023/11/Lobster-thermidor.jpg?resize=620%2C845&ssl=1" alt="Lobster Thermidor">
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-item-title">
+                                    <span>Lobster Thermidor</span>
+                                    <span class="menu-item-price">$98</span>
+                                </div>
+                                <div class="menu-item-description">
+                                    Maine lobster baked with creamy brandy sauce and gruyère cheese
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="menu-item">
+                            <div class="menu-item-image">
+                                <img src="https://www.thenationalnews.com/resizer/1zHicYjz7fyO7ToDu8KjiufcCZw=/arc-photo-thenational/eu-central-1-prod/public/NASTOKOII5HABMMHZ3LQEQT24M.JPG" alt="Wagyu Beef">
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-item-title">
+                                    <span>Wagyu Beef Rossini</span>
+                                    <span class="menu-item-price">$185</span>
+                                </div>
+                                <div class="menu-item-description">
+                                    A5 Japanese wagyu with foie gras, black truffle, and madeira jus
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="menu-category">
+                        <h3 class="category-title">Desserts</h3>
+                        
+                        <div class="menu-item">
+                            <div class="menu-item-image">
+                                <img src="https://www.howtocookthat.net/public_html/wp-content/uploads/2016/12/P2220355-550x413.jpg" alt="Golden Sundae">
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-item-title">
+                                    <span>Golden Opulence Sundae</span>
+                                    <span class="menu-item-price">$65</span>
+                                </div>
+                                <div class="menu-item-description">
+                                    Tahitian vanilla ice cream with edible gold leaf and rare chocolates
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="menu-item">
+                            <div class="menu-item-image">
+                                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhZV8BYM95wlXLneyCCi2FZSBE6FtXknqW0s6sHtjtGb0uxQLXHAE4hPDLMqrAaHZAjV1Kw94DV0oVfLCMA0l8i-m3EydEiBwEsVdbZ9uBQeo5jE-WZENDMdiYrmLtuRPBRZ5lq4JHP1Y0/s1600/La+Grenouille+grand+marnier+souffle+(12).JPG" alt="Soufflé">
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-item-title">
+                                    <span>Grand Marnier Soufflé</span>
+                                    <span class="menu-item-price">$42</span>
+                                </div>
+                                <div class="menu-item-description">
+                                    Light as air soufflé infused with premium Grand Marnier
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-category">
+                        <h3 class="category-title">Cocktails</h3>
+                        
+                        <div class="menu-item">
+                            <div class="menu-item-image">
+                                <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Cocktail">
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-item-title">
+                                    <span>Cosmopolitan Royale</span>
+                                    <span class="menu-item-price">$32</span>
+                                </div>
+                                <div class="menu-item-description">
+                                    Premium vodka, Cointreau, cranberry, and fresh lime with gold flakes
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="menu-item">
+                            <div class="menu-item-image">
+                                <img src="https://images.unsplash.com/photo-1551751299-1b51cab2694c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Martini">
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-item-title">
+                                    <span>Truffle-Infused Martini</span>
+                                    <span class="menu-item-price">$38</span>
+                                </div>
+                                <div class="menu-item-description">
+                                    Belvedere vodka, dry vermouth, and white truffle essence
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ÉPICURE</h3>
+                    <p>Where culinary artistry meets visual perfection. Experience dishes crafted to delight both palate and eye.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-tripadvisor"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 1 Luxe Avenue, Paris</p>
+                    <p><i class="fas fa-phone"></i> +1 (888) 567-8888</p>
+                    <p><i class="fas fa-envelope"></i> contact@epicure.com</p>
+                    <p><i class="fas fa-concierge-bell"></i> Reservations: reservations@epicure.com</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Hours</h3>
+                    <p>Monday - Thursday: 6pm - 10pm</p>
+                    <p>Friday - Saturday: 6pm - 11pm</p>
+                    <p>Sunday: 5pm - 9pm</p>
+                    <p>Sunday Brunch: 11am - 2pm</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Exclusive Updates</h3>
+                    <p>Subscribe to our newsletter for seasonal menus, special events, and exclusive offers.</p>
+                    <form>
+                        <div class="form-group">
+                            <input type="email" placeholder="Your Email" required>
+                        </div>
+                        <button type="submit" class="btn" style="width: 100%;">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ÉPICURE. All Rights Reserved. Crafted with excellence in Paris.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Mobile menu toggle
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+        
+        mobileMenu.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+            mobileMenu.querySelector('i').classList.toggle('fa-bars');
+            mobileMenu.querySelector('i').classList.toggle('fa-times');
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if (navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
+                        mobileMenu.querySelector('i').classList.add('fa-bars');
+                        mobileMenu.querySelector('i').classList.remove('fa-times');
+                    }
+                }
+            });
+        });
+        
+        // Gallery item animations
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        galleryItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                item.style.transform = 'translateY(-15px)';
+                item.style.boxShadow = '0 30px 60px rgba(0, 0, 0, 0.8)';
+            });
+            
+            item.addEventListener('mouseleave', () => {
+                item.style.transform = 'translateY(0)';
+                item.style.boxShadow = '0 20px 50px rgba(0, 0, 0, 0.5)';
+            });
+        });
+        
+        // Menu item animations
+        const menuItems = document.querySelectorAll('.menu-item');
+        menuItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                const img = item.querySelector('img');
+                img.style.transform = 'scale(1.1)';
+            });
+            
+            item.addEventListener('mouseleave', () => {
+                const img = item.querySelector('img');
+                img.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

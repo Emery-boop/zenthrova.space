@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Zenthrova Auth</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      background-color: #1a73e8;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+    }
+
+    button:hover {
+      background-color: #0f5cd4;
+    }
+
+    #status {
+      text-align: center;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Zenthrova Auth</h2>
+
+    <input type="email" id="reg-email" placeholder="Register Email">
+    <input type="password" id="reg-password" placeholder="Register Password">
+    <select id="reg-role">
+      <option value="user">User</option>
+      <option value="admin">Admin</option>
+    </select>
+    <button onclick="register()">Register</button>
+
+    <hr>
+
+    <input type="email" id="log-email" placeholder="Login Email">
+    <input type="password" id="log-password" placeholder="Login Password">
+    <button onclick="login()">Login</button>
+
+    <div id="status"></div>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAIk22DpsqkYe4NSfNrL7cO23JZwgAb0Xc",
+      authDomain: "zenthrova-dc47c.firebaseapp.com",
+      projectId: "zenthrova-dc47c",
+      storageBucket: "zenthrova-dc47c.firebasestorage.app",
+      messagingSenderId: "700876509291",
+      appId: "1:700876509291:web:6300b4c2b72b87576d212e"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    async function register() {
+      const email = document.getElementById("reg-email").value;
+      const password = document.getElementById("reg-password").value;
+      const role = document.getElementById("reg-role").value;
+
+      try {
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+        await setDoc(doc(db, "users", cred.user.uid), {
+          email: email,
+          role: role
+        });
+        document.getElementById("status").innerText = "Registered as " + role;
+      } catch (err) {
+        document.getElementById("status").innerText = "Error: " + err.message;
+      }
+    }
+
+    async function login() {
+      const email = document.getElementById("log-email").value;
+      const password = document.getElementById("log-password").value;
+
+      try {
+        const cred = await signInWithEmailAndPassword(auth, email, password);
+        const docRef = doc(db, "users", cred.user.uid);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const role = docSnap.data().role;
+          document.getElementById("status").innerText = `Logged in as ${role}`;
+          if (role === "admin") {
+            alert("Welcome Admin! Redirecting to admin panel...");
+          } else {
+            alert("Welcome User!");
+          }
+        } else {
+          document.getElementById("status").innerText = "No role found for this user.";
+        }
+      } catch (err) {
+        document.getElementById("status").innerText = "Error: " + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
